@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dharmaranya</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-light: #f0d060;
+            --gold-dark: #b8962a;
+            --deep-red: #7b1e2e;
+            --deep-red-dark: #5a1520;
+            --dark-bg: #1a1a1a;
+            --cream: #f8f1e3;
+        }
+
+        * { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            background: var(--cream);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--deep-red); }
+
+        /* ====================== NAVBAR ====================== */
+        .navbar {
+            background: transparent;
+            backdrop-filter: blur(12px);
+            transition: all 0.4s ease;
+            padding: 1rem 0;
+            z-index: 1000;
+        }
+        .navbar.scrolled {
+            background: #ffffff;
+            padding: 0.75rem 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.12);
+        }
+        .navbar:not(.scrolled) .nav-link,
+        .navbar:not(.scrolled) .navbar-brand,
+        .navbar:not(.scrolled) .om-symbol { color: white !important; text-shadow: 0 2px 12px rgba(0,0,0,0.75); }
+        .navbar.scrolled .nav-link,
+        .navbar.scrolled .navbar-brand,
+        .navbar.scrolled .om-symbol { color: #1a1a1a !important; text-shadow: none; }
+        .nav-link { font-weight: 500; margin: 0 12px; position: relative; }
+        .nav-link:after { content:''; position:absolute; width:0; height:2px; bottom:-4px; left:50%; background:var(--gold); transition:all 0.3s; }
+        .nav-link:hover:after { width:100%; left:0; }
+
+        /* ====================== HERO ====================== */
+        .hero-slide {
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            animation: kenBurns 22s infinite alternate ease-in-out;
+        }
+        @keyframes kenBurns { 0%{background-size:100%} 100%{background-size:118%} }
+        .hero-overlay { background: linear-gradient(45deg,rgba(212,175,55,0.15),rgba(255,255,255,0.25),rgba(139,30,46,0.70)); height:100%; }
+        .hero-content { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; color:white; width:90%; padding:0 15px; }
+        .hero-content h1 { font-size:clamp(2.6rem,8vw,4.8rem); color:#ffffff; text-shadow:0 4px 20px rgba(0,0,0,0.6); margin-bottom:1rem; line-height:1.1; }
+        .hero-content .subtitle { font-size:clamp(1.1rem,3.5vw,1.6rem); margin-bottom:2rem; opacity:0.95; }
+        .hero-content a{ color: var(--gold) }
+
+        .slider-thumbnails { position:absolute; bottom:20px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,0.4); padding:8px 12px; border-radius:50px; }
+        .thumbnail { height:55px; width:90px; object-fit:cover; border:2px solid transparent; border-radius:8px; margin:0 5px; cursor:pointer; transition:all 0.3s; }
+        .thumbnail.active { border-color:var(--gold); transform:scale(1.1); }
+        @media(max-width:768px){ .slider-thumbnails{display:none!important;} }
+
+        /* ====================== SECTION SHARED ====================== */
+        .section-title { position:relative; display:inline-block; padding-bottom:15px; }
+        .section-title:after { content:'ॐ'; position:absolute; bottom:-10px; left:50%; transform:translateX(-50%); font-size:2.2rem; color:var(--gold); opacity:0.3; }
+
+        .section-eyebrow {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: linear-gradient(135deg,rgba(212,175,55,0.12),rgba(212,175,55,0.04));
+            border: 1px solid rgba(212,175,55,0.35); border-radius: 50px;
+            padding: 6px 18px; font-size: 0.78rem; letter-spacing: 2px;
+            text-transform: uppercase; color: #a07c1a; font-weight: 600; margin-bottom: 12px;
+        }
+        .section-eyebrow i { color: var(--gold); }
+
+        .gold-line-divider {
+            display: flex; align-items: center; gap: 14px; margin: 0 auto 40px;
+        }
+        .gold-line-divider .line { flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+        .gold-line-divider .sym { color:var(--gold); font-size:1.2rem; }
+
+        .btn-gold-premium {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #1a1a1a; font-weight: 700; border: none;
+            padding: 14px 36px; border-radius: 50px; letter-spacing: 1px;
+            font-size: 0.9rem; text-transform: uppercase; text-decoration: none;
+            transition: all 0.3s; display: inline-block;
+            box-shadow: 0 8px 25px rgba(212,175,55,0.35);
+        }
+        .btn-gold-premium:hover { transform:translateY(-3px); box-shadow:0 14px 35px rgba(212,175,55,0.5); color:#1a1a1a; }
+
+        .btn-outline-gold-premium {
+            background: transparent; color: var(--gold);
+            border: 2px solid var(--gold); font-weight: 700;
+            padding: 12px 34px; border-radius: 50px; letter-spacing: 1px;
+            font-size: 0.9rem; text-transform: uppercase; text-decoration: none;
+            transition: all 0.3s; display: inline-block;
+        }
+        .btn-outline-gold-premium:hover { background:var(--gold); color:#1a1a1a; transform:translateY(-3px); }
+
+        /* ====================== ABOUT US ====================== */
+        #about { background:linear-gradient(160deg,#fdf7ee 0%,#f8f1e3 50%,#fdf0e0 100%); position:relative; overflow:hidden; }
+        #about::before { content:'ॐ'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:32rem; color:var(--gold); opacity:0.035; pointer-events:none; font-family:serif; line-height:1; user-select:none; }
+        #about::after { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:linear-gradient(90deg,transparent,var(--gold),var(--deep-red),var(--gold),transparent); }
+
+        .about-image-wrapper { position:relative; display:inline-block; }
+        .about-image-wrapper::before { content:''; position:absolute; top:-14px; left:-14px; right:14px; bottom:14px; border:2px solid var(--gold); border-radius:20px; opacity:0.6; z-index:0; }
+        .about-image-wrapper::after { content:''; position:absolute; top:14px; left:14px; right:-14px; bottom:-14px; border:2px solid var(--deep-red); border-radius:20px; opacity:0.25; z-index:0; }
+        .about-image-wrapper img { position:relative; z-index:1; border-radius:18px; box-shadow:0 30px 80px rgba(123,30,46,0.22),0 10px 30px rgba(0,0,0,0.12); transition:transform 0.5s ease,box-shadow 0.5s ease; display:block; width:85%; }
+        .about-image-wrapper img:hover { transform:translateY(-8px) scale(1.01); box-shadow:0 45px 100px rgba(123,30,46,0.28),0 15px 40px rgba(0,0,0,0.15); }
+        .about-badge { position:absolute; bottom:-18px; right:0; z-index:2; background:linear-gradient(135deg,var(--deep-red),#a0243a); color:white; border-radius:14px; padding:14px 22px; text-align:center; box-shadow:0 12px 35px rgba(123,30,46,0.4); border:2px solid rgba(212,175,55,0.4); }
+        .about-badge .badge-number { font-family:'Playfair Display',serif; font-size:2.2rem; color:var(--gold); line-height:1; display:block; }
+        .about-badge .badge-text { font-size:0.72rem; letter-spacing:1.5px; text-transform:uppercase; opacity:0.9; margin-top:2px; display:block; }
+        .about-gold-divider { display:flex; align-items:center; gap:12px; margin:18px 0 24px; }
+        .about-gold-divider span { display:block; height:1.5px; flex:1; background:linear-gradient(90deg,var(--gold),transparent); }
+        .about-gold-divider .divider-icon { color:var(--gold); font-size:1.4rem; flex-shrink:0; }
+        .about-eyebrow { display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,rgba(212,175,55,0.12),rgba(212,175,55,0.04)); border:1px solid rgba(212,175,55,0.35); border-radius:50px; padding:6px 18px; font-size:0.78rem; letter-spacing:2px; text-transform:uppercase; color:#a07c1a; font-weight:600; margin-bottom:16px; }
+        .about-eyebrow i { color:var(--gold); }
+        .about-main-heading { font-size:clamp(1.9rem,4vw,2.8rem); color:var(--deep-red); line-height:1.2; margin-bottom:0; }
+        .about-sub-heading { font-size:1.25rem; color:var(--deep-red); font-family:'Playfair Display',serif; margin-bottom:10px; display:flex; align-items:center; gap:10px; }
+        .about-sub-heading::after { content:''; display:block; height:1px; flex:1; background:linear-gradient(90deg,rgba(212,175,55,0.5),transparent); }
+        .about-lead { font-size:1.02rem; line-height:1.85; color:#4a4a4a; margin-bottom:14px; }
+        .about-feature-list { list-style:none; padding:0; margin:0 0 20px; display:grid; grid-template-columns:1fr 1fr; gap:10px 20px; }
+        .about-feature-list li { display:flex; align-items:flex-start; gap:9px; font-size:0.95rem; color:#444; line-height:1.4; }
+        .about-feature-list li i { color:var(--gold); font-size:0.85rem; margin-top:3px; flex-shrink:0; }
+        .about-info-cards { display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; }
+        .about-info-card { flex:1; min-width:130px; background:white; border:1px solid rgba(212,175,55,0.25); border-radius:14px; padding:16px 14px; text-align:center; box-shadow:0 4px 20px rgba(0,0,0,0.06); transition:all 0.3s; }
+        .about-info-card:hover { transform:translateY(-5px); box-shadow:0 12px 35px rgba(212,175,55,0.2); border-color:var(--gold); }
+        .about-info-card i { font-size:1.6rem; color:var(--gold); margin-bottom:8px; display:block; }
+        .about-info-card .info-title { font-weight:600; font-size:0.82rem; color:var(--deep-red); text-transform:uppercase; letter-spacing:0.8px; }
+        .about-info-card .info-sub { font-size:0.78rem; color:#888; margin-top:2px; }
+
+        @media(max-width:768px){
+            .about-feature-list{grid-template-columns:1fr;}
+            .about-image-wrapper::before,.about-image-wrapper::after{display:none;}
+            .about-image-wrapper img{width:100%;}
+            .about-badge{right:10px;bottom:-10px;}
+        }
+
+        /* ====================== PARALLAX ====================== */
+        .parallax { background-attachment:fixed; background-size:cover; background-position:center; padding:140px 0; position:relative; }
+        .parallax::before { content:''; position:absolute; top:0;left:0;right:0;bottom:0; background:linear-gradient(135deg,rgba(255,224,178,0.35),rgba(255,183,120,0.38),rgba(70,45,25,0.5)); }
+
+        /* ====================== PRIEST TEAM ====================== */
+        #priests { background: linear-gradient(160deg, #1a0a0f 0%, #2d1020 50%, #1a0a0f 100%); position: relative; overflow: hidden; }
+        #priests::before { content:'ॐ'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:36rem; color:var(--gold); opacity:0.03; pointer-events:none; font-family:serif; line-height:1; user-select:none; }
+        #priests::after { content:''; position:absolute; top:0;left:0;right:0; height:4px; background:linear-gradient(90deg,transparent,var(--gold),var(--deep-red),var(--gold),transparent); }
+
+        #priests .section-title { color: var(--gold); }
+        #priests .section-title:after { color: var(--gold); opacity: 0.5; }
+
+        .priest-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 22px; overflow: hidden;
+            transition: all 0.4s; position: relative;
+            backdrop-filter: blur(10px);
+        }
+        .priest-card::before {
+            content:''; position:absolute; inset:0; border-radius:22px;
+            background: linear-gradient(160deg, rgba(212,175,55,0.06), transparent 60%);
+            pointer-events:none;
+        }
+        .priest-card:hover { transform:translateY(-10px); box-shadow:0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.4); }
+
+        .priest-card .img-wrap { position:relative; overflow:hidden; }
+        .priest-card .img-wrap::after { content:''; position:absolute; bottom:0;left:0;right:0; height:50%; background:linear-gradient(to top,rgba(26,10,15,0.9),transparent); }
+        .priest-card img { width:100%; object-fit:cover; transition:transform 0.6s ease; filter:brightness(0.9) saturate(1.1); }
+        .priest-card:hover img { transform:scale(1.06); }
+
+        .priest-card .priest-body { padding:22px 24px 26px; }
+        .priest-card h4, .priest-card h5 { font-family:'Playfair Display',serif; color:var(--gold); margin-bottom:4px; }
+        .priest-card small { color:rgba(255,255,255,0.55); font-size:0.78rem; letter-spacing:1.5px; text-transform:uppercase; }
+
+        .priest-badge {
+            display:inline-flex; align-items:center; gap:6px;
+            background:rgba(212,175,55,0.12); border:1px solid rgba(212,175,55,0.3);
+            border-radius:50px; padding:4px 12px; font-size:0.72rem;
+            color:var(--gold); letter-spacing:1px; text-transform:uppercase; margin-top:10px;
+        }
+
+        /* ====================== GALLERY ====================== */
+        #gallery { background:linear-gradient(160deg,#fdf7ee 0%,#f8f1e3 60%,#fdf0e0 100%); position:relative; overflow:hidden; }
+        #gallery::before { content:''; position:absolute; top:0;left:0;right:0; height:4px; background:linear-gradient(90deg,transparent,var(--gold),var(--deep-red),var(--gold),transparent); }
+
+        .gallery-masonry {
+            columns: 3;
+            column-gap: 16px;
+        }
+        @media(max-width:992px){ .gallery-masonry{columns:2;} }
+        @media(max-width:576px){ .gallery-masonry{columns:1;} }
+
+        .gallery-item-wrap {
+            break-inside: avoid;
+            margin-bottom: 16px;
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            display: block;
+        }
+
+        .gallery-item-wrap img {
+            width:100%; display:block;
+            border-radius:16px;
+            transition:transform 0.5s ease, filter 0.5s ease;
+        }
+
+        .gallery-overlay {
+            position:absolute; inset:0; border-radius:16px;
+            background:linear-gradient(to top, rgba(123,30,46,0.75) 0%, transparent 60%);
+            opacity:0; transition:opacity 0.4s ease;
+            display:flex; align-items:flex-end; padding:20px;
+        }
+        .gallery-overlay span {
+            color:white; font-size:0.82rem; letter-spacing:1.5px;
+            text-transform:uppercase; font-weight:600;
+        }
+        .gallery-overlay i { color:var(--gold); margin-right:8px; }
+
+        .gallery-item-wrap:hover img { transform:scale(1.05); filter:brightness(0.85); }
+        .gallery-item-wrap:hover .gallery-overlay { opacity:1; }
+
+        /* Filter Tabs */
+        .gallery-tabs { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:36px; }
+        .gallery-tab {
+            background:white; border:1.5px solid rgba(212,175,55,0.3); border-radius:50px;
+            padding:8px 22px; font-size:0.82rem; font-weight:600; letter-spacing:1px;
+            text-transform:uppercase; color:#888; cursor:pointer; transition:all 0.3s;
+        }
+        .gallery-tab.active, .gallery-tab:hover { background:var(--gold); border-color:var(--gold); color:#1a1a1a; }
+
+        /* ====================== DONATION ====================== */
+        #donation {
+            background: linear-gradient(160deg, #1a0a0f 0%, #2d1020 50%, #1a0a0f 100%);
+            position: relative; overflow: hidden;
+        }
+        #donation::before { content:'ॐ'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:36rem; color:var(--gold); opacity:0.03; pointer-events:none; font-family:serif; line-height:1; user-select:none; }
+        #donation::after { content:''; position:absolute; top:0;left:0;right:0; height:4px; background:linear-gradient(90deg,transparent,var(--gold),var(--deep-red),var(--gold),transparent); }
+
+        #donation .section-title { color: var(--gold); }
+        #donation .section-title:after { color: var(--gold); opacity: 0.5; }
+
+        .donation-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 24px; padding: 36px 32px;
+            backdrop-filter: blur(12px); position: relative;
+            overflow: hidden; height: 100%;
+        }
+        .donation-card::before {
+            content:''; position:absolute; inset:0; border-radius:24px;
+            background:linear-gradient(160deg,rgba(212,175,55,0.06),transparent 60%);
+            pointer-events:none;
+        }
+
+        .qr-frame {
+            background: white; border-radius: 20px;
+            padding: 18px; display: inline-block;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.3);
+            position: relative;
+        }
+        .qr-frame::before, .qr-frame::after {
+            content:''; position:absolute; width:20px; height:20px;
+            border-color: var(--gold); border-style: solid;
+        }
+        .qr-frame::before { top:-2px; left:-2px; border-width:3px 0 0 3px; border-radius:4px 0 0 0; }
+        .qr-frame::after { bottom:-2px; right:-2px; border-width:0 3px 3px 0; border-radius:0 0 4px 0; }
+
+        .qr-frame img { width: 180px; height: 180px; display:block; border-radius:10px; }
+
+        /* QR placeholder if image missing */
+        .qr-placeholder {
+            width:180px; height:180px; border-radius:10px;
+            background:linear-gradient(135deg,#f0f0f0,#e0e0e0);
+            display:flex; flex-direction:column; align-items:center; justify-content:center;
+            gap:8px; color:#888;
+        }
+        .qr-placeholder i { font-size:3rem; color:var(--deep-red); opacity:0.6; }
+        .qr-placeholder span { font-size:0.75rem; text-align:center; letter-spacing:0.5px; }
+
+        .donation-amount-btns { display:flex; flex-wrap:wrap; gap:10px; margin:20px 0; }
+        .amount-btn {
+            background: rgba(212,175,55,0.1); border:1.5px solid rgba(212,175,55,0.3);
+            color: var(--gold); border-radius:50px; padding:8px 20px; font-size:0.9rem;
+            font-weight:600; cursor:pointer; transition:all 0.3s; font-family:'Inter',sans-serif;
+        }
+        .amount-btn:hover, .amount-btn.active { background:var(--gold); color:#1a1a1a; border-color:var(--gold); }
+
+        .upi-id-box {
+            background: rgba(212,175,55,0.08); border:1px solid rgba(212,175,55,0.25);
+            border-radius:12px; padding:14px 20px; display:flex; align-items:center; gap:14px;
+            margin-top:16px;
+        }
+        .upi-id-box i { color:var(--gold); font-size:1.4rem; flex-shrink:0; }
+        .upi-id-box .upi-text { color:rgba(255,255,255,0.85); font-size:0.88rem; }
+        .upi-id-box .upi-id { color:var(--gold); font-weight:700; font-size:1rem; font-family:monospace; }
+
+        .donation-impact-list { list-style:none; padding:0; margin:0; }
+        .donation-impact-list li {
+            display:flex; align-items:flex-start; gap:12px;
+            padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.06);
+            color:rgba(255,255,255,0.8); font-size:0.9rem; line-height:1.5;
+        }
+        .donation-impact-list li:last-child { border-bottom:none; }
+        .donation-impact-list li i { color:var(--gold); font-size:1rem; margin-top:2px; flex-shrink:0; }
+
+        /* ====================== VISIT US ====================== */
+        #visit { background:linear-gradient(160deg,#fdf7ee 0%,#f8f1e3 60%,#fdf0e0 100%); position:relative; overflow:hidden; }
+        #visit::before { content:''; position:absolute; top:0;left:0;right:0; height:4px; background:linear-gradient(90deg,transparent,var(--gold),var(--deep-red),var(--gold),transparent); }
+
+        .visit-info-card {
+            background:white; border-radius:20px; padding:28px 26px;
+            box-shadow:0 8px 40px rgba(0,0,0,0.07); border:1px solid rgba(212,175,55,0.15);
+            /*height:100%;*/ transition:all 0.3s;
+        }
+        .visit-info-card:hover { transform:translateY(-5px); box-shadow:0 20px 50px rgba(212,175,55,0.15); border-color:rgba(212,175,55,0.4); }
+
+        .timing-row {
+            display:flex; align-items:center; gap:14px;
+            padding:14px 0; border-bottom:1px solid rgba(212,175,55,0.12);
+        }
+        .timing-row:last-child { border-bottom:none; }
+        .timing-icon {
+            width:42px; height:42px; border-radius:50%;
+            background:linear-gradient(135deg,rgba(212,175,55,0.15),rgba(212,175,55,0.05));
+            border:1px solid rgba(212,175,55,0.3);
+            display:flex; align-items:center; justify-content:center; flex-shrink:0;
+        }
+        .timing-icon i { color:var(--gold); font-size:1rem; }
+        .timing-label { font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; color:#999; font-weight:600; }
+        .timing-value { font-size:0.95rem; font-weight:600; color:var(--deep-red); margin-top:1px; }
+
+        .map-wrapper {
+            border-radius:22px; overflow:hidden;
+            box-shadow:0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(212,175,55,0.2);
+            position:relative;
+        }
+        .map-wrapper::before {
+            content:''; position:absolute; inset:0; border-radius:22px;
+            box-shadow:inset 0 0 0 3px rgba(212,175,55,0.2);
+            z-index:1; pointer-events:none;
+        }
+        .map-wrapper iframe { display:block; border:none; border-radius:22px; }
+
+        .contact-chip {
+            display:inline-flex; align-items:center; gap:10px;
+            background:white; border:1px solid rgba(212,175,55,0.25); border-radius:50px;
+            padding:10px 20px; font-size:0.88rem; color:#444; box-shadow:0 4px 15px rgba(0,0,0,0.06);
+            transition:all 0.3s; text-decoration:none;
+        }
+        .contact-chip:hover { border-color:var(--gold); box-shadow:0 8px 25px rgba(212,175,55,0.2); color:#333; transform:translateY(-2px); }
+        .contact-chip i { color:var(--gold); }
+
+        /* ====================== FOOTER ====================== */
+        .footer {
+            background: linear-gradient(160deg, #0d0508 0%, #1a0a0f 40%, #2d1020 100%);
+            color: #ddd; position:relative; overflow:hidden;
+        }
+        .footer::before { content:'ॐ'; position:absolute; bottom:-60px; right:-40px; font-size:28rem; color:var(--gold); opacity:0.025; pointer-events:none; font-family:serif; line-height:1; user-select:none; }
+        .footer::after { content:''; position:absolute; top:0;left:0;right:0; height:4px; background:linear-gradient(90deg,transparent,var(--gold),var(--deep-red),var(--gold),transparent); }
+
+        .footer-logo { font-size:2.6rem; color:var(--gold); font-family:'Playfair Display',serif; line-height:1; }
+        .footer-tagline { color:rgba(255,255,255,0.45); font-size:0.82rem; letter-spacing:2px; text-transform:uppercase; margin-top:6px; }
+
+        .footer-divider { width:60px; height:2px; background:linear-gradient(90deg,var(--gold),transparent); margin:20px 0; }
+
+        .footer-about-text { color:rgba(255,255,255,0.6); font-size:0.88rem; line-height:1.75; max-width:280px; }
+
+        .footer-heading {
+            font-family:'Playfair Display',serif; color:var(--gold);
+            font-size:1.1rem; margin-bottom:20px; position:relative; padding-bottom:12px;
+        }
+        .footer-heading::after { content:''; position:absolute; bottom:0;left:0; width:36px; height:2px; background:var(--gold); border-radius:2px; }
+
+        .footer-links { list-style:none; padding:0; margin:0; }
+        .footer-links li { margin-bottom:10px; }
+        .footer-links a {
+            color:rgba(255,255,255,0.55); text-decoration:none; font-size:0.88rem;
+            transition:all 0.3s; display:flex; align-items:center; gap:8px;
+        }
+        .footer-links a i { color:var(--gold); font-size:0.65rem; }
+        .footer-links a:hover { color:var(--gold); padding-left:4px; }
+
+        .footer-contact-item {
+            display:flex; align-items:flex-start; gap:14px;
+            margin-bottom:16px;
+        }
+        .footer-contact-icon {
+            width:38px; height:38px; background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.25);
+            border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+        }
+        .footer-contact-icon i { color:var(--gold); font-size:0.9rem; }
+        .footer-contact-item .text-label { font-size:0.72rem; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.35); }
+        .footer-contact-item .text-value { color:rgba(255,255,255,0.75); font-size:0.9rem; margin-top:1px; }
+
+        .social-btn {
+            width:42px; height:42px; background:rgba(255,255,255,0.05); border:1px solid rgba(212,175,55,0.2);
+            border-radius:50%; display:inline-flex; align-items:center; justify-content:center;
+            color:rgba(255,255,255,0.6); font-size:1rem; text-decoration:none;
+            transition:all 0.3s; margin-right:8px;
+        }
+        .social-btn:hover { background:var(--gold); border-color:var(--gold); color:#1a1a1a; transform:translateY(-3px); }
+
+        .footer-bottom {
+            border-top:1px solid rgba(255,255,255,0.07);
+            padding-top:24px; margin-top:40px;
+        }
+        .footer-bottom-text { color:rgba(255,255,255,0.3); font-size:0.8rem; }
+        .footer-bottom-text span { color:var(--gold); }
+
+        /* ====================== RESPONSIVE TWEAKS ====================== */
+        @media(max-width:992px){
+            .about-info-cards { gap:10px; }
+            .about-info-card { min-width:100px; padding:12px 10px; }
+        }
+        @media(max-width:768px){
+            .about-feature-list{grid-template-columns:1fr;}
+            .about-image-wrapper::before,.about-image-wrapper::after{display:none;}
+            .about-image-wrapper img{width:100%;}
+            .about-badge{right:10px;bottom:-10px;}
+            .parallax{background-attachment:scroll;}
+            .donation-card{padding:26px 20px;}
+            .qr-frame img{width:150px;height:150px;}
+            .qr-placeholder{width:150px;height:150px;}
+            .footer-divider{margin:14px 0;}
+            .footer-about-text{max-width:100%;}
+        }
+        @media(max-width:576px){
+            .hero-content h1{font-size:2.2rem;}
+            .gallery-masonry{columns:1;}
+        }
+
+
+
+        /* ====================== HERO RESPONSIVE ====================== */
+
+        /* Better image scaling on all devices */
+        .hero-slide{
+            min-height:100vh;
+            background-size:cover;
+            background-position:center center;
+        }
+
+        /* Large Screens */
+        @media (min-width:1600px){
+            .hero-content{
+                width:75%;
+            }
+
+            .hero-content h1{
+                font-size:5.5rem;
+            }
+
+            .hero-content .subtitle{
+                font-size:1.7rem;
+            }
+        }
+
+        /* Laptop */
+        @media (max-width:1200px){
+
+            .hero-slide{
+                height:90vh;
+            }
+
+            .hero-content{
+                width:92%;
+            }
+
+            .hero-content h1{
+                font-size:4rem;
+            }
+
+            .hero-content .subtitle{
+                font-size:1.35rem;
+            }
+        }
+
+        /* Tablet */
+        @media (max-width:992px){
+
+            .hero-slide{
+                height:82vh;
+                animation:none;
+                background-position:center;
+            }
+
+            .hero-overlay{
+                background:linear-gradient(
+                        180deg,
+                        rgba(0,0,0,0.25),
+                        rgba(123,30,46,0.55)
+                );
+            }
+
+            .hero-content{
+                width:94%;
+                padding:0 20px;
+            }
+
+            .hero-content h1{
+                font-size:3.2rem;
+                line-height:1.15;
+                margin-bottom:16px;
+            }
+
+            .hero-content .subtitle{
+                font-size:1.15rem;
+                line-height:1.7;
+                margin-bottom:26px;
+            }
+
+            .hero-content .btn{
+                padding:14px 32px !important;
+                font-size:0.85rem;
+            }
+        }
+
+        /* Mobile */
+        @media (max-width:768px){
+
+            .hero-slide{
+                height:78vh;
+                min-height:620px;
+                background-position:center center;
+            }
+
+            .hero-content{
+                width:100%;
+                padding:0 18px;
+                top:52%;
+            }
+
+            .hero-content h1{
+                font-size:2.6rem;
+                line-height:1.15;
+                margin-bottom:14px;
+            }
+
+            .hero-content .subtitle{
+                font-size:1rem;
+                line-height:1.7;
+                margin-bottom:22px;
+                max-width:95%;
+                margin-left:auto;
+                margin-right:auto;
+            }
+
+            .hero-content .btn{
+                width:auto;
+                min-width:220px;
+                padding:13px 26px !important;
+                font-size:0.82rem;
+                border-radius:50px;
+            }
+
+            .carousel-control-prev,
+            .carousel-control-next{
+                width:10%;
+            }
+
+            .carousel-control-prev-icon,
+            .carousel-control-next-icon{
+                transform:scale(0.8);
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width:576px){
+
+            .hero-slide{
+                height:72vh;
+                min-height:560px;
+            }
+
+            .hero-content{
+                top:53%;
+            }
+
+            .hero-content h1{
+                font-size:2.15rem;
+            }
+
+            .hero-content .subtitle{
+                font-size:0.95rem;
+                line-height:1.65;
+            }
+
+            .hero-content .btn{
+                width:100%;
+                max-width:280px;
+                font-size:0.8rem;
+                padding:12px 18px !important;
+            }
+        }
+
+        /* Extra Small Devices */
+        @media (max-width:400px){
+
+            .hero-slide{
+                min-height:520px;
+            }
+
+            .hero-content h1{
+                font-size:1.9rem;
+            }
+
+            .hero-content .subtitle{
+                font-size:0.88rem;
+            }
+
+            .hero-content .btn{
+                max-width:240px;
+                font-size:0.76rem;
+            }
+        }
+
+        /* Landscape Mobile */
+        @media (max-height:600px) and (orientation:landscape){
+
+            .hero-slide{
+                height:100vh;
+                min-height:480px;
+            }
+
+            .hero-content{
+                top:50%;
+            }
+
+            .hero-content h1{
+                font-size:2.2rem;
+                margin-bottom:10px;
+            }
+
+            .hero-content .subtitle{
+                margin-bottom:18px;
+                font-size:0.95rem;
+            }
+
+            .hero-content .btn{
+                padding:10px 24px !important;
+            }
+        }
+
+
+
+        /* Hide default Google UI */
+        #google_translate_element {
+            display: none;
+        }
+
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+
+        body {
+            top: 0 !important;
+        }
+
+        /* Premium language switcher */
+        .language-switcher {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            outline: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .language-switcher:hover {
+            background: rgba(255,255,255,0.14);
+        }
+
+        .language-switcher option {
+            color: black;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- ======================== NAVBAR ======================== -->
+<nav class="navbar navbar-expand-lg fixed-top" id="navbar">
+    <div class="container">
+
+        <a class="navbar-brand fw-bold fs-5 notranslate" href="#">
+            <span class="om-symbol me-1">ॐ</span> Dharmaranya
+        </a>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" style="box-shadow:none;">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">About Us</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#priests">Priest Team</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#wisdom">Wisdom</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#gallery">Gallery</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#donation">Donate</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="#visit">Visit Us</a>
+                </li>
+
+                <!-- Language Switcher -->
+                <li class="nav-item ms-lg-3">
+                    <select id="languageSwitcher" class="language-switcher">
+                        <option value="en">EN</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="fr">FR</option>
+                        <option value="de">DE</option>
+                        <option value="ja">日本語</option>
+                    </select>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<!-- Hidden Google Translate Element -->
+<div id="google_translate_element"></div>
+
+<!-- ======================== HERO SLIDER ======================== -->
+<section id="home">
+    <div id="heroSlider" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="hero-slide" style="background-image:url('images/temple_ori/1.png')">
+                    <div class="hero-overlay">
+                        <div class="hero-content container text-center">
+                            <h1>Dharmaranya</h1>
+                            <p class="subtitle">A Sacred Sanctuary of Dharma, Devotion & Divine Peace</p>
+                            <a href="#about" class="btn btn-lg px-5 py-3 btn-gold">Explore the Temple</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="hero-slide" style="background-image:url('images/1.jpg')">
+                    <div class="hero-overlay">
+                        <div class="hero-content container text-center">
+                            <h1>Dharmaranya</h1>
+                            <p class="subtitle">A Sacred Sanctuary of Dharma, Devotion & Divine Peace</p>
+                            <a href="#about" class="btn btn-lg px-5 py-3 btn-gold">Explore the Temple</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="hero-slide" style="background-image:url('images/2.jpg')">
+                    <div class="hero-overlay">
+                        <div class="hero-content container text-center">
+                            <h1>Where Soul Meets Divinity</h1>
+                            <p class="subtitle">Experience ancient traditions, daily aarti and spiritual bliss</p>
+                            <a href="#donation" class="btn btn-lg px-5 py-3 btn-gold">Support the Temple</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="hero-slide" style="background-image:url('images/3.jpg')">
+                    <div class="hero-overlay">
+                        <div class="hero-content container text-center">
+                            <h1>Where Soul Meets Divinity</h1>
+                            <p class="subtitle">Experience ancient traditions, daily aarti and spiritual bliss</p>
+                            <a href="#gallery" class="btn btn-lg px-5 py-3 btn-gold">View Gallery</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="hero-slide" style="background-image:url('images/4.jpg')">
+                    <div class="hero-overlay">
+                        <div class="hero-content container text-center">
+                            <h1>Where Soul Meets Divinity</h1>
+                            <p class="subtitle">Experience ancient traditions, daily aarti and spiritual bliss</p>
+                            <a href="#visit" class="btn btn-lg px-5 py-3 btn-gold">Plan Your Visit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="hero-slide" style="background-image:url('images/5.jpg')">
+                    <div class="hero-overlay">
+                        <div class="hero-content container text-center">
+                            <h1>Where Soul Meets Divinity</h1>
+                            <p class="subtitle">Experience ancient traditions, daily aarti and spiritual bliss</p>
+                            <a href="#about" class="btn btn-lg px-5 py-3 btn-gold">Explore the Temple</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroSlider" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroSlider" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+        <div class="slider-thumbnails text-center d-none d-md-block">
+            <div class="container">
+                <div class="d-flex justify-content-center gap-3 flex-wrap" id="thumbnails">
+                    <img src="images/temple_ori/1.png" class="thumbnail active" data-slide="0" alt="">
+                    <img src="images/1.jpg" class="thumbnail" data-slide="1" alt="">
+                    <img src="images/2.jpg" class="thumbnail" data-slide="2" alt="">
+                    <img src="images/3.jpg" class="thumbnail" data-slide="3" alt="">
+                    <img src="images/4.jpg" class="thumbnail" data-slide="4" alt="">
+                    <img src="images/5.jpg" class="thumbnail" data-slide="5" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================== ABOUT US ======================== -->
+<section id="about" class="py-5">
+    <div class="container py-5">
+        <div class="text-center mb-5">
+            <h2 class="section-title">About Us</h2>
+        </div>
+        <div class="row align-items-center g-5 mb-5">
+            <div class="col-lg-5 text-center text-lg-start">
+                <div class="about-image-wrapper" style="padding:14px 14px 32px 0;">
+                    <img src="images/temple_ori/2.png" alt="Dharmaranya Temple">
+                    <div class="about-badge">
+                        <span class="badge-number">49</span>
+                        <span class="badge-text">Days to Blessings</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="about-eyebrow">
+                    <i class="fas fa-om"></i>
+                    Sacred Pilgrimage Site · Bihar, India
+                </div>
+                <h1 class="about-main-heading mb-3">About Dharmaranya<br>Vedi Temple</h1>
+                <div class="about-gold-divider">
+                    <span></span>
+                    <span class="divider-icon">✦</span>
+                    <span style="background:linear-gradient(90deg,transparent,var(--gold));"></span>
+                </div>
+                <p class="about-lead">
+                    Dharmaranya Vedi Temple is a sacred pilgrimage site located near Vishnupad Temple in Bihar, India. Revered for its deep spiritual significance, the temple is believed to be a powerful center for ancestral rituals, meditation, and divine blessings.
+                </p>
+                <div class="about-info-cards mb-4">
+                    <div class="about-info-card">
+                        <i class="fas fa-fire-flame-curved"></i>
+                        <div class="info-title">Pind Daan</div>
+                        <div class="info-sub">Ancestral Rituals</div>
+                    </div>
+                    <div class="about-info-card">
+                        <i class="fas fa-om"></i>
+                        <div class="info-title">Daily Puja</div>
+                        <div class="info-sub">Sacred Ceremonies</div>
+                    </div>
+                    <div class="about-info-card">
+                        <i class="fas fa-spa"></i>
+                        <div class="info-title">Meditation</div>
+                        <div class="info-sub">Spiritual Retreat</div>
+                    </div>
+                    <div class="about-info-card">
+                        <i class="fas fa-hands-praying"></i>
+                        <div class="info-title">Yajna</div>
+                        <div class="info-sub">Vedic Fire Rituals</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div style="background:white;border-radius:20px;padding:32px 28px;height:100%;box-shadow:0 8px 40px rgba(0,0,0,0.07);border-top:4px solid var(--gold);position:relative;overflow:hidden;transition:all 0.3s;" onmouseenter="this.style.transform='translateY(-6px)';this.style.boxShadow='0 20px 60px rgba(212,175,55,0.18)'" onmouseleave="this.style.transform='translateY(0)';this.style.boxShadow='0 8px 40px rgba(0,0,0,0.07)'">
+                    <div style="position:absolute;top:-10px;right:-10px;font-size:5rem;color:var(--gold);opacity:0.06;font-family:serif;pointer-events:none;">ॐ</div>
+                    <h3 class="about-sub-heading"><i class="fas fa-star-and-crescent" style="color:var(--gold);font-size:1rem;"></i>Spiritual & Mythological Significance</h3>
+                    <p class="about-lead">According to ancient traditions from the era of the Mahabharata, King Yudhishthira performed sacred rituals — Pind Daan, Shraddha, and Yajna — at this holy site to free himself from the sins and karmic burdens of the great war.</p>
+                    <p class="about-lead">It is also believed that Lord Krishna performed the powerful Tripindi Shraddha ritual here to neutralize the deadly Brahmastra and protect the unborn King Parikshit.</p>
+                    <ul class="about-feature-list">
+                        <li><i class="fas fa-check-circle"></i> Peace for ancestors</li>
+                        <li><i class="fas fa-check-circle"></i> Remove Pitra Dosha</li>
+                        <li><i class="fas fa-check-circle"></i> Family harmony</li>
+                        <li><i class="fas fa-check-circle"></i> Prosperity & blessings</li>
+                        <li><i class="fas fa-check-circle"></i> Remove negative energy</li>
+                        <li><i class="fas fa-check-circle"></i> Childbirth blessings</li>
+                    </ul>
+                    <div style="background:linear-gradient(135deg,rgba(212,175,55,0.1),rgba(212,175,55,0.04));border:1px solid rgba(212,175,55,0.3);border-radius:10px;padding:12px 16px;font-size:0.88rem;color:#7a5c10;font-style:italic;">
+                        <i class="fas fa-quote-left me-2" style="color:var(--gold);"></i>Sincere prayers here begin showing positive effects within 49 days.
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div style="background:white;border-radius:20px;padding:32px 28px;height:100%;box-shadow:0 8px 40px rgba(0,0,0,0.07);border-top:4px solid var(--deep-red);position:relative;overflow:hidden;transition:all 0.3s;" onmouseenter="this.style.transform='translateY(-6px)';this.style.boxShadow='0 20px 60px rgba(123,30,46,0.14)'" onmouseleave="this.style.transform='translateY(0)';this.style.boxShadow='0 8px 40px rgba(0,0,0,0.07)'">
+                    <div style="position:absolute;top:-10px;right:-10px;font-size:5rem;color:var(--deep-red);opacity:0.05;font-family:serif;pointer-events:none;">☸</div>
+                    <h3 class="about-sub-heading"><i class="fas fa-dharmachakra" style="color:var(--deep-red);font-size:1rem;"></i>Connection with Lord Buddha</h3>
+                    <p class="about-lead">According to Buddhist traditions, Gautama Buddha meditated in this sacred region during his spiritual journey before attaining enlightenment in Bodh Gaya.</p>
+                    <p class="about-lead">It is believed that Queen Sujata offered him sacred Kheer after years of intense penance. Soon after leaving this place, Buddha attained enlightenment beneath the Bodhi Tree, becoming known to the world as <em>"The Buddha."</em></p>
+                    <div style="display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,rgba(123,30,46,0.06),rgba(123,30,46,0.02));border-radius:12px;padding:16px;border:1px solid rgba(123,30,46,0.12);">
+                        <i class="fas fa-dharmachakra fa-2x" style="color:var(--deep-red);opacity:0.7;flex-shrink:0;"></i>
+                        <p style="margin:0;font-size:0.88rem;color:#5a2030;font-style:italic;line-height:1.6;">A land touched by the Buddha's feet and blessed by his enlightenment journey.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div style="background:linear-gradient(160deg,var(--deep-red),#a0243a);border-radius:20px;padding:32px 28px;height:100%;box-shadow:0 8px 40px rgba(123,30,46,0.3);position:relative;overflow:hidden;transition:all 0.3s;color:white;" onmouseenter="this.style.transform='translateY(-6px)';this.style.boxShadow='0 20px 60px rgba(123,30,46,0.45)'" onmouseleave="this.style.transform='translateY(0)';this.style.boxShadow='0 8px 40px rgba(123,30,46,0.3)'">
+                    <div style="position:absolute;top:-15px;right:-15px;font-size:9rem;color:white;opacity:0.05;font-family:serif;pointer-events:none;">ॐ</div>
+                    <div style="width:48px;height:48px;background:rgba(212,175,55,0.2);border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:18px;">
+                        <i class="fas fa-place-of-worship" style="color:var(--gold);font-size:1.2rem;"></i>
+                    </div>
+                    <h3 style="font-family:'Playfair Display',serif;color:var(--gold);font-size:1.3rem;margin-bottom:14px;">A Sacred Center of Faith</h3>
+                    <p style="font-size:1rem;line-height:1.85;opacity:0.92;margin-bottom:16px;">For centuries, Dharmaranya Vedi Temple has remained a symbol of faith, spiritual transformation, meditation, and divine grace.</p>
+                    <p style="font-size:1rem;line-height:1.85;opacity:0.92;margin-bottom:24px;">Today, pilgrims and spiritual seekers from across India and around the world visit this holy site seeking peace, blessings, and spiritual upliftment.</p>
+                    <div style="border-top:1px solid rgba(255,255,255,0.2);padding-top:20px;display:flex;gap:24px;">
+                        <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold);line-height:1;">∞</div><div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;opacity:0.75;margin-top:4px;">Centuries<br>of Faith</div></div>
+                        <div style="width:1px;background:rgba(255,255,255,0.15);"></div>
+                        <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold);line-height:1;">Pan</div><div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;opacity:0.75;margin-top:4px;">India &<br>World</div></div>
+                        <div style="width:1px;background:rgba(255,255,255,0.15);"></div>
+                        <div style="text-align:center;"><div style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold);line-height:1;">✦</div><div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:1px;opacity:0.75;margin-top:4px;">Divine<br>Grace</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================== PRIEST TEAM ======================== -->
+<section id="priests" class="py-5">
+    <div class="container py-5">
+        <div class="text-center mb-2">
+            <div class="section-eyebrow" style="background:rgba(212,175,55,0.1);border-color:rgba(212,175,55,0.3);color:var(--gold);">
+                <i class="fas fa-hands-praying"></i> Our Spiritual Leaders
+            </div>
+        </div>
+        <div class="text-center mb-5">
+            <h2 class="section-title" style="color:var(--gold);">Mahant Ji & Priest Team</h2>
+        </div>
+
+        <!-- Mahant Ji — Featured -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-7 col-md-9">
+                <div class="priest-card" style="display:flex;flex-direction:column;align-items:center;">
+                    <div class="img-wrap w-100" style="max-height:380px;">
+                        <img src="images/def_priest.png" alt="Mahant Ji" style="height:380px;width:100%;object-fit:cover;">
+                    </div>
+                    <div class="priest-body text-center w-100">
+                        <div style="width:50px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 14px;"></div>
+                        <h4 style="font-size:1.5rem;">H.H. Mahant Shri Vishnu Das Ji</h4>
+                        <div class="priest-badge"><i class="fas fa-star" style="font-size:0.65rem;"></i> Spiritual Head & Founder</div>
+                        <p style="color:rgba(255,255,255,0.55);font-size:0.88rem;line-height:1.7;margin-top:14px;max-width:480px;margin-left:auto;margin-right:auto;">
+                            A revered spiritual leader with decades of devotion to Dharmaranya Vedi, guiding thousands of pilgrims on the path of Dharma, ancestral peace, and divine grace.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Priests Row -->
+        <div class="row g-4 justify-content-center">
+            <div class="col-lg-4 col-md-6">
+                <div class="priest-card">
+                    <div class="img-wrap">
+                        <img src="images/def_priest.png" alt="Pandit Ram Shastri" style="height:260px;">
+                    </div>
+                    <div class="priest-body text-center">
+                        <h5>Pandit Ram Shastri</h5>
+                        <div class="priest-badge"><i class="fas fa-om" style="font-size:0.65rem;"></i> Head Pujari</div>
+                        <p style="color:rgba(255,255,255,0.45);font-size:0.82rem;margin-top:10px;line-height:1.6;">Leads daily rituals and morning aarti with Vedic precision and profound devotion.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="priest-card">
+                    <div class="img-wrap">
+                        <img src="images/def_priest.png" alt="Pandit Krishna Gopal" style="height:260px;">
+                    </div>
+                    <div class="priest-body text-center">
+                        <h5>Pandit Krishna Gopal</h5>
+                        <div class="priest-badge"><i class="fas fa-book-open" style="font-size:0.65rem;"></i> Ritual & Vedic Scholar</div>
+                        <p style="color:rgba(255,255,255,0.45);font-size:0.82rem;margin-top:10px;line-height:1.6;">Expert in Vedic scriptures, Pind Daan, Shraddha, and ancestral peace ceremonies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================== WISDOM PARALLAX ======================== -->
+<section id="wisdom" class="parallax" style="background-image:url('images/temple_ori/3.png')">
+    <div class="container position-relative text-center text-white" style="z-index:2;">
+        <div style="display:inline-flex;align-items:center;gap:14px;margin-bottom:24px;">
+            <span style="display:block;width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold));"></span>
+            <span style="color:var(--gold);font-size:1.4rem;">✦</span>
+            <span style="display:block;width:60px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+        </div>
+        <h2 class="display-5" style="color:var(--gold);font-family:'Playfair Display',serif;text-shadow:0 4px 20px rgba(0,0,0,0.5);">"Dharmo Rakshati Rakshitah"</h2>
+        <p class="fs-4 mt-3" style="opacity:0.9;font-style:italic;">Dharma protects those who protect Dharma.</p>
+        <div style="display:inline-flex;align-items:center;gap:14px;margin-top:24px;">
+            <span style="display:block;width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold));"></span>
+            <span style="color:var(--gold);font-size:0.9rem;letter-spacing:3px;">— Manusmriti</span>
+            <span style="display:block;width:60px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);"></span>
+        </div>
+    </div>
+</section>
+
+<!-- ======================== GALLERY ======================== -->
+<section id="gallery" class="py-5">
+    <div class="container py-5">
+        <div class="text-center mb-2">
+            <div class="section-eyebrow">
+                <i class="fas fa-images"></i> Sacred Moments
+            </div>
+        </div>
+        <div class="text-center mb-4">
+            <h2 class="section-title">Temple Gallery</h2>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="gallery-tabs">
+            <button class="gallery-tab active" data-filter="all">All</button>
+            <button class="gallery-tab" data-filter="temple">Temple</button>
+            <button class="gallery-tab" data-filter="rituals">Rituals</button>
+            <button class="gallery-tab" data-filter="festival">Festivals</button>
+            <button class="gallery-tab" data-filter="nature">Sacred Nature</button>
+        </div>
+
+        <!-- Masonry Grid -->
+        <div class="gallery-masonry" id="galleryGrid">
+
+            <a href="images/1.jpg" class="gallery-item-wrap glightbox" data-category="temple" data-gallery="temple-gallery" data-glightbox="title: Temple View; description: Dharmaranya Vedi Temple">
+                <img src="images/1.jpg" alt="Temple View" loading="lazy">
+                <div class="gallery-overlay"><span><i class="fas fa-expand-alt"></i>Temple View</span></div>
+            </a>
+
+            <a href="images/2.jpg" class="gallery-item-wrap glightbox" data-category="rituals" data-gallery="temple-gallery" data-glightbox="title: Sacred Rituals; description: Daily Puja & Aarti">
+                <img src="images/2.jpg" alt="Sacred Rituals" loading="lazy">
+                <div class="gallery-overlay"><span><i class="fas fa-expand-alt"></i>Sacred Rituals</span></div>
+            </a>
+
+            <a href="images/3.jpg" class="gallery-item-wrap glightbox" data-category="festival" data-gallery="temple-gallery" data-glightbox="title: Festival Celebration; description: Temple Festival">
+                <img src="images/3.jpg" alt="Festival" loading="lazy">
+                <div class="gallery-overlay"><span><i class="fas fa-expand-alt"></i>Festivals</span></div>
+            </a>
+
+            <a href="images/4.jpg" class="gallery-item-wrap glightbox" data-category="temple" data-gallery="temple-gallery" data-glightbox="title: Temple Architecture; description: Sacred Architecture">
+                <img src="images/4.jpg" alt="Temple Architecture" loading="lazy">
+                <div class="gallery-overlay"><span><i class="fas fa-expand-alt"></i>Architecture</span></div>
+            </a>
+
+            <a href="images/5.jpg" class="gallery-item-wrap glightbox" data-category="nature" data-gallery="temple-gallery" data-glightbox="title: Sacred Surroundings; description: The sacred landscape">
+                <img src="images/5.jpg" alt="Sacred Nature" loading="lazy">
+                <div class="gallery-overlay"><span><i class="fas fa-expand-alt"></i>Sacred Nature</span></div>
+            </a>
+
+            <a href="images/temple_ori/1.png" class="gallery-item-wrap glightbox" data-category="temple" data-gallery="temple-gallery" data-glightbox="title: Dharmaranya Temple; description: The divine abode">
+                <img src="images/temple_ori/1.png" alt="Dharmaranya" loading="lazy">
+                <div class="gallery-overlay"><span><i class="fas fa-expand-alt"></i>Dharmaranya</span></div>
+            </a>
+
+            <a href="images/temple_ori/2.png" class="gallery-item-wrap glightbox" data-category="rituals" data-gallery="temple-gallery" data-glightbox="title: Temple Inner Sanctum; description: The sacred inner hall">
+                <img src="images/temple_ori/2.png" alt="Inner Sanctum" loading="lazy">
+                <div class="gallery-overlay"><span><i class="fas fa-expand-alt"></i>Inner Sanctum</span></div>
+            </a>
+
+            <a href="images/temple_ori/3.png" class="gallery-item-wrap glightbox" data-category="nature" data-gallery="temple-gallery" data-glightbox="title: Sacred Grounds; description: The peaceful temple grounds">
+                <img src="images/temple_ori/3.png" alt="Sacred Grounds" loading="lazy">
+                <div class="gallery-overlay"><span><i class="fas fa-expand-alt"></i>Sacred Grounds</span></div>
+            </a>
+
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="#" class="btn-outline-gold-premium">
+                <i class="fas fa-plus me-2"></i> View Full Gallery
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ======================== DONATION ======================== -->
+<section id="donation" class="py-5">
+    <div class="container py-5">
+        <div class="text-center mb-2">
+            <div class="section-eyebrow" style="background:rgba(212,175,55,0.1);border-color:rgba(212,175,55,0.3);color:var(--gold);">
+                <i class="fas fa-heart"></i> Seva & Offerings
+            </div>
+        </div>
+        <div class="text-center mb-5">
+            <h2 class="section-title" style="color:var(--gold);">Support the Temple</h2>
+            <div class="gold-line-divider" style="max-width:300px;margin:20px auto 0;">
+                <div class="line"></div>
+                <div class="sym">✦</div>
+                <div class="line"></div>
+            </div>
+        </div>
+
+        <div class="row g-4 align-items-stretch">
+
+            <!-- QR Code Card -->
+            <div class="col-lg-4 col-md-12">
+                <div class="donation-card text-center">
+                    <div style="margin-bottom:24px;">
+                        <div class="section-eyebrow" style="background:rgba(212,175,55,0.1);border-color:rgba(212,175,55,0.3);color:var(--gold);justify-content:center;">
+                            <i class="fas fa-qrcode"></i> Scan & Pay — UPI
+                        </div>
+                    </div>
+
+                    <div class="qr-frame" style="margin:0 auto 24px;">
+                        <!-- Replace src with actual UPI QR image path -->
+                        <img src="images/upi.jpeg" alt="UPI QR Code" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="qr-placeholder" style="display:none;">
+                            <i class="fas fa-qrcode"></i>
+                            <span>UPI QR Code<br>Coming Soon</span>
+                        </div>
+                    </div>
+
+                    <div class="upi-id-box">
+                        <i class="fas fa-mobile-screen-button"></i>
+                        <div>
+                            <div class="upi-text">UPI ID</div>
+                            <div class="upi-id">dharmaranya@upi</div>
+                        </div>
+                        <button onclick="navigator.clipboard.writeText('dharmaranya@upi');this.innerHTML='<i class=\'fas fa-check\'></i>';setTimeout(()=>this.innerHTML='<i class=\'fas fa-copy\'></i>',2000);" style="background:rgba(212,175,55,0.1);border:1px solid rgba(212,175,55,0.3);border-radius:8px;padding:6px 10px;color:var(--gold);cursor:pointer;margin-left:auto;flex-shrink:0;" title="Copy UPI ID">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+
+                    <p style="color:rgba(255,255,255,0.4);font-size:0.78rem;margin-top:16px;letter-spacing:0.5px;">
+                        <i class="fas fa-shield-halved me-1" style="color:var(--gold);"></i>
+                        100% Secure · Instant Transfer · All UPI Apps
+                    </p>
+                </div>
+            </div>
+
+            <!-- Donation Amounts Card -->
+            <div class="col-lg-4 col-md-6">
+                <div class="donation-card" style="display:flex;flex-direction:column;height:100%;">
+
+                    <div class="section-eyebrow" style="background:rgba(212,175,55,0.1);border-color:rgba(212,175,55,0.3);color:var(--gold);margin-bottom:20px;">
+                        <i class="fas fa-dove"></i> Sacred Giving
+                    </div>
+
+                    <h4 style="font-family:'Playfair Display',serif;color:var(--gold);margin-bottom:8px;">
+                        Donate With Devotion
+                    </h4>
+
+                    <p style="color:rgba(255,255,255,0.5);font-size:0.86rem;line-height:1.7;margin-bottom:24px;">
+                        In Sanatan tradition, offering with a pure heart is considered one of the highest forms of seva and spiritual connection.
+                    </p>
+
+                    <!-- Quote Box -->
+                    <div style="background:linear-gradient(135deg, rgba(212,175,55,0.08), rgba(255,255,255,0.02));border:1px solid rgba(212,175,55,0.18);border-radius:18px;padding:22px 20px;margin-bottom:20px;position:relative;overflow:hidden;">
+
+                        <div style="position:absolute;top:-10px;right:-5px;font-size:4rem;color:rgba(212,175,55,0.05);font-family:'Playfair Display',serif;">
+                            ॐ
+                        </div>
+
+                        <div style="display:flex;align-items:flex-start;gap:14px;position:relative;z-index:2;">
+
+                            <div style="width:42px;height:42px;border-radius:12px;background:rgba(212,175,55,0.12);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fas fa-hands-praying" style="color:var(--gold);font-size:1rem;"></i>
+                            </div>
+
+                            <div>
+                                <div style="color:rgba(255,255,255,0.9);font-size:0.92rem;line-height:1.8;font-style:italic;">
+                                    “The smallest offering made with faith and devotion becomes sacred in the eyes of the Divine.”
+                                </div>
+
+                                <div style="margin-top:10px;color:var(--gold);font-size:0.76rem;letter-spacing:1px;text-transform:uppercase;">
+                                    — Sanatan Tradition
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Features -->
+                    <div style="display:flex;flex-direction:column;gap:12px;flex:1;">
+
+                        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);">
+                            <i class="fas fa-shield-heart" style="color:var(--gold);font-size:1rem;width:18px;"></i>
+                            <span style="color:rgba(255,255,255,0.72);font-size:0.84rem;">
+                    Secure & trusted contribution process
+                </span>
+                        </div>
+
+                        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);">
+                            <i class="fas fa-mobile-screen-button" style="color:var(--gold);font-size:1rem;width:18px;"></i>
+                            <span style="color:rgba(255,255,255,0.72);font-size:0.84rem;">
+                    Choose any donation amount on your device
+                </span>
+                        </div>
+
+                        <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);">
+                            <i class="fas fa-bell" style="color:var(--gold);font-size:1rem;width:18px;"></i>
+                            <span style="color:rgba(255,255,255,0.72);font-size:0.84rem;">
+                    Receive blessings and temple updates
+                </span>
+                        </div>
+
+                    </div>
+
+                    <!-- Bottom Note -->
+                    <div style="margin-top:24px;padding-top:18px;border-top:1px dashed rgba(212,175,55,0.18);text-align:center;">
+                        <div style="color:rgba(255,255,255,0.42);font-size:0.76rem;line-height:1.7;">
+                            Your devotion helps keep sacred traditions alive for future generations.
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Impact Card -->
+            <div class="col-lg-4 col-md-6">
+                <div class="donation-card">
+                    <div class="section-eyebrow" style="background:rgba(212,175,55,0.1);border-color:rgba(212,175,55,0.3);color:var(--gold);margin-bottom:20px;">
+                        <i class="fas fa-seedling"></i> Your Impact
+                    </div>
+                    <h4 style="font-family:'Playfair Display',serif;color:var(--gold);margin-bottom:6px;">Where Your Seva Goes</h4>
+                    <p style="color:rgba(255,255,255,0.5);font-size:0.86rem;line-height:1.6;margin-bottom:20px;">Your generous contribution directly supports the temple's sacred mission and daily operations.</p>
+
+                    <ul class="donation-impact-list">
+                        <li>
+                            <i class="fas fa-fire-flame-curved"></i>
+                            <div><strong style="color:rgba(255,255,255,0.85);">Daily Rituals & Aarti</strong><br><span style="font-size:0.8rem;color:rgba(255,255,255,0.45);">Maintains morning and evening Puja ceremonies</span></div>
+                        </li>
+                        <li>
+                            <i class="fas fa-place-of-worship"></i>
+                            <div><strong style="color:rgba(255,255,255,0.85);">Temple Maintenance</strong><br><span style="font-size:0.8rem;color:rgba(255,255,255,0.45);">Upkeep of sacred structures and premises</span></div>
+                        </li>
+                        <li>
+                            <i class="fas fa-utensils"></i>
+                            <div><strong style="color:rgba(255,255,255,0.85);">Prasad & Bhog</strong><br><span style="font-size:0.8rem;color:rgba(255,255,255,0.45);">Sacred food offerings and langar service</span></div>
+                        </li>
+                        <li>
+                            <i class="fas fa-graduation-cap"></i>
+                            <div><strong style="color:rgba(255,255,255,0.85);">Vedic Education</strong><br><span style="font-size:0.8rem;color:rgba(255,255,255,0.45);">Supporting young students of Vedic scriptures</span></div>
+                        </li>
+                        <li>
+                            <i class="fas fa-hand-holding-heart"></i>
+                            <div><strong style="color:rgba(255,255,255,0.85);">Community Seva</strong><br><span style="font-size:0.8rem;color:rgba(255,255,255,0.45);">Free rituals for underprivileged pilgrims</span></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust badges -->
+        <div class="row mt-4 g-3 justify-content-center">
+            <div class="col-auto">
+                <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.15);border-radius:50px;padding:10px 20px;color:rgba(255,255,255,0.55);font-size:0.8rem;">
+                    <i class="fas fa-shield-halved" style="color:var(--gold);"></i> Secured Donation
+                </div>
+            </div>
+            <div class="col-auto">
+                <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.15);border-radius:50px;padding:10px 20px;color:rgba(255,255,255,0.55);font-size:0.8rem;">
+                    <i class="fas fa-receipt" style="color:var(--gold);"></i> Tax Exempt (80G)
+                </div>
+            </div>
+            <div class="col-auto">
+                <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(212,175,55,0.06);border:1px solid rgba(212,175,55,0.15);border-radius:50px;padding:10px 20px;color:rgba(255,255,255,0.55);font-size:0.8rem;">
+                    <i class="fas fa-heart" style="color:var(--gold);"></i> Serving Since Centuries
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ======================== VISIT US ======================== -->
+<section id="visit" class="py-5">
+    <div class="container py-5">
+        <div class="text-center mb-2">
+            <div class="section-eyebrow">
+                <i class="fas fa-location-dot"></i> Find Us
+            </div>
+        </div>
+        <div class="text-center mb-5">
+            <h2 class="section-title">Visit Us</h2>
+            <div class="gold-line-divider" style="max-width:300px;margin:20px auto 0;">
+                <div class="line"></div>
+                <div class="sym">✦</div>
+                <div class="line"></div>
+            </div>
+        </div>
+
+        <div class="row g-4 align-items-stretch">
+
+            <!-- Temple Info -->
+            <div class="col-lg-5">
+
+                <!-- Contact Chips -->
+                <div class="visit-info-card">
+                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+                        <div style="width:44px;height:44px;background:linear-gradient(135deg,rgba(212,175,55,0.15),rgba(212,175,55,0.05));border:1px solid rgba(212,175,55,0.3);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                            <i class="fas fa-address-card" style="color:var(--gold);"></i>
+                        </div>
+                        <h4 style="margin:0;font-size:1.2rem;">Contact & Location</h4>
+                    </div>
+                    <div class="d-flex flex-column gap-3">
+                        <a href="tel:+919876543210" class="contact-chip">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <div style="font-size:0.7rem;color:#aaa;letter-spacing:1px;text-transform:uppercase;">Call Us</div>
+                                <div style="font-weight:600;color:#333;">+91 98765 43210</div>
+                            </div>
+                        </a>
+                        <a href="mailto:info@dharmaranya.org" class="contact-chip">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <div style="font-size:0.7rem;color:#aaa;letter-spacing:1px;text-transform:uppercase;">Email Us</div>
+                                <div style="font-weight:600;color:#333;">info@dharmaranya.org</div>
+                            </div>
+                        </a>
+                        <div class="contact-chip" style="cursor:default;">
+                            <i class="fas fa-location-dot"></i>
+                            <div>
+                                <div style="font-size:0.7rem;color:#aaa;letter-spacing:1px;text-transform:uppercase;">Address</div>
+                                <div style="font-weight:600;color:#333;font-size:0.85rem;">Near Vishnupad Temple, Gaya, Bihar</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map -->
+            <div class="col-lg-7">
+                <div class="map-wrapper" style="height:100%;max-height:300px;">
+                    <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3634.123!2d84.9919!3d24.6890!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x398d5b6ae3073e25%3A0x9ab5e51d1a0f2e8c!2sVishnupad%20Temple!5e0!3m2!1sen!2sin!4v1680000000000!5m2!1sen!2sin"
+                            width="100%" height="100%" style="max-height:300px;border:none;border-radius:22px;"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ======================== FOOTER ======================== -->
+<footer class="footer pt-5 pb-4">
+    <div class="container">
+        <div class="row g-5">
+
+            <!-- Brand Column -->
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-logo">ॐ Dharmaranya</div>
+                <div class="footer-tagline">Sacred · Ancient · Divine</div>
+                <div class="footer-divider"></div>
+                <p class="footer-about-text">
+                    Dharmaranya Vedi Temple — a timeless sanctuary of dharma, devotion, and divine grace near Vishnupad, Bihar. A place where souls find peace and ancestors find liberation.
+                </p>
+                <div class="mt-4">
+                    <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="social-btn"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <h5 class="footer-heading">Quick Links</h5>
+                <ul class="footer-links">
+                    <li><a href="#about"><i class="fas fa-chevron-right"></i> About Us</a></li>
+                    <li><a href="#priests"><i class="fas fa-chevron-right"></i> Priest Team</a></li>
+                    <li><a href="#wisdom"><i class="fas fa-chevron-right"></i> Wisdom</a></li>
+                    <li><a href="#gallery"><i class="fas fa-chevron-right"></i> Gallery</a></li>
+                    <li><a href="#donation"><i class="fas fa-chevron-right"></i> Donate</a></li>
+                    <li><a href="#visit"><i class="fas fa-chevron-right"></i> Visit Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Services -->
+            <div class="col-lg-3 col-md-6 col-6">
+                <h5 class="footer-heading">Our Services</h5>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Pind Daan</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Shraddha Puja</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Tripindi Shraddha</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Navratri Puja</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Yajna Ceremony</a></li>
+                    <li><a href="#"><i class="fas fa-chevron-right"></i> Daily Aarti</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div class="col-lg-3 col-md-6">
+                <h5 class="footer-heading">Get In Touch</h5>
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><i class="fas fa-location-dot"></i></div>
+                    <div>
+                        <div class="text-label">Address</div>
+                        <div class="text-value">Near Vishnupad Temple,<br>Gaya, Bihar – 823001</div>
+                    </div>
+                </div>
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><i class="fas fa-phone"></i></div>
+                    <div>
+                        <div class="text-label">Phone</div>
+                        <div class="text-value">+91 98765 43210</div>
+                    </div>
+                </div>
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><i class="fas fa-envelope"></i></div>
+                    <div>
+                        <div class="text-label">Email</div>
+                        <div class="text-value">info@dharmaranya.org</div>
+                    </div>
+                </div>
+                <div class="footer-contact-item">
+                    <div class="footer-contact-icon"><i class="fas fa-clock"></i></div>
+                    <div>
+                        <div class="text-label">Temple Hours</div>
+                        <div class="text-value">6:00 AM – 9:00 PM</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+            <p class="footer-bottom-text mb-0">
+                © 2025 <span>Dharmaranya Vedi Temple</span>. All Rights Reserved.
+            </p>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <span style="color:rgba(255,255,255,0.2);font-size:0.75rem;">Crafted with</span>
+                <i class="fas fa-heart" style="color:var(--gold);font-size:0.75rem;"></i>
+                <span style="color:rgba(255,255,255,0.2);font-size:0.75rem;">& Devotion</span>
+            </div>
+            <div style="display:flex;gap:16px;">
+                <a href="#" style="color:rgba(255,255,255,0.3);font-size:0.78rem;text-decoration:none;transition:color 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">Privacy Policy</a>
+                <a href="#" style="color:rgba(255,255,255,0.3);font-size:0.78rem;text-decoration:none;transition:color 0.3s;" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(255,255,255,0.3)'">Terms of Use</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+
+<script>
+    // GLightbox
+    const lightbox = GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true, zoomable: true });
+
+    // Hero Slider
+    const heroSlider = new bootstrap.Carousel('#heroSlider', { interval: 5000 });
+    $('#thumbnails img').click(function() { heroSlider.to($(this).data('slide')); });
+    $('#heroSlider').on('slid.bs.carousel', function(e) {
+        $('#thumbnails img').removeClass('active');
+        $('#thumbnails img').eq(e.to).addClass('active');
+    });
+
+    // Navbar scroll
+    $(window).scroll(function() {
+        $('#navbar').toggleClass('scrolled', $(this).scrollTop() > 50);
+    });
+
+    // Gallery Filter
+    document.querySelectorAll('.gallery-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            const filter = this.dataset.filter;
+            document.querySelectorAll('.gallery-item-wrap').forEach(item => {
+                if (filter === 'all' || item.dataset.category === filter) {
+                    item.style.display = 'block';
+                    item.style.animation = 'fadeIn 0.4s ease';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    // Donation amount buttons
+    document.querySelectorAll('.amount-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    // Smooth reveal on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.priest-card, .donation-card, .visit-info-card, .gallery-item-wrap').forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+</script>
+
+<script>
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+            {
+                pageLanguage: 'en',
+                autoDisplay: false
+            },
+            'google_translate_element'
+        );
+    }
+
+    document.addEventListener('change', function(e) {
+
+        if (e.target.id === 'languageSwitcher') {
+
+            const lang = e.target.value;
+
+            const interval = setInterval(() => {
+
+                const select = document.querySelector('.goog-te-combo');
+
+                if (select) {
+
+                    select.value = lang;
+                    select.dispatchEvent(new Event('change'));
+
+                    clearInterval(interval);
+                }
+
+            }, 300);
+        }
+    });
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>
