@@ -668,30 +668,135 @@
             display: none !important;
         }
 
-        body {
-            top: 0 !important;
+        /* Hide Google Translate UI */
+        #google_translate_element {
+            display: none;
         }
 
-        /* Premium language switcher */
-        .language-switcher {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
-            color: white;
-            padding: 8px 14px;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            outline: none;
+        .goog-te-banner-frame {
+            display: none !important;
+        }
+
+
+
+        /* ===============================
+           Floating Language Button
+        ================================= */
+
+        .floating-lang {
+            position: fixed;
+            right: 20px;
+            bottom: 90px;
+            z-index: 9999;
+        }
+
+        .lang-toggle {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: none;
             cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s ease;
+            font-size: 22px;
+
+            background: rgba(123, 30, 46, 0.9);
+            color: white;
+
+            backdrop-filter: blur(10px);
+
+            box-shadow:
+                    0 8px 25px rgba(0,0,0,0.25);
+
+            transition: 0.3s;
         }
 
-        .language-switcher:hover {
-            background: rgba(255,255,255,0.14);
+        .lang-toggle:hover {
+            transform: translateY(-4px);
         }
 
-        .language-switcher option {
-            color: black;
+        /* Dropdown */
+
+        .lang-menu {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+
+            background: rgba(20,20,20,0.95);
+
+            border: 1px solid rgba(255,255,255,0.08);
+
+            padding: 14px;
+            border-radius: 18px;
+
+            min-width: 170px;
+
+            backdrop-filter: blur(20px);
+        }
+
+        .lang-menu.show {
+            display: flex;
+        }
+
+        .lang-menu button {
+            border: none;
+            background: rgba(255,255,255,0.05);
+            color: white;
+
+            padding: 10px 14px;
+            border-radius: 10px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .lang-menu button:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        /* ===============================
+           Scroll Top Button
+        ================================= */
+
+        #scrollTopBtn {
+            position: fixed;
+
+            right: 20px;
+            bottom: 20px;
+
+            width: 55px;
+            height: 55px;
+
+            border-radius: 50%;
+            border: none;
+
+            background: linear-gradient(
+                    135deg,
+                    #d4af37,
+                    #f0d060
+            );
+
+            color: #111;
+            font-size: 24px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            z-index: 9999;
+
+            display: none;
+
+            box-shadow:
+                    0 8px 25px rgba(0,0,0,0.25);
+
+            transition: 0.3s;
+        }
+
+        #scrollTopBtn:hover {
+            transform: translateY(-4px);
         }
 
     </style>
@@ -754,6 +859,29 @@
         </div>
     </div>
 </nav>
+
+<!-- Floating Language Switcher -->
+<div class="floating-lang">
+
+    <button class="lang-toggle" id="langToggle">
+        🌐
+    </button>
+
+    <div class="lang-menu" id="langMenu">
+
+        <button onclick="changeLanguage('en')">English</button>
+        <button onclick="changeLanguage('hi')">हिन्दी</button>
+        <button onclick="changeLanguage('fr')">Français</button>
+        <button onclick="changeLanguage('de')">Deutsch</button>
+        <button onclick="changeLanguage('ja')">日本語</button>
+
+    </div>
+</div>
+
+<!-- Scroll To Top -->
+<button id="scrollTopBtn">
+    ↑
+</button>
 
 <!-- Hidden Google Translate Element -->
 <div id="google_translate_element"></div>
@@ -1537,7 +1665,10 @@
 </script>
 
 <script>
+    /* Google Translate */
+
     function googleTranslateElementInit() {
+
         new google.translate.TranslateElement(
             {
                 pageLanguage: 'en',
@@ -1547,30 +1678,57 @@
         );
     }
 
-    document.addEventListener('change', function(e) {
+    /* Change Language */
 
-        if (e.target.id === 'languageSwitcher') {
+    function changeLanguage(lang) {
 
-            const lang = e.target.value;
+        const interval = setInterval(() => {
 
-            const interval = setInterval(() => {
+            const select = document.querySelector('.goog-te-combo');
 
-                const select = document.querySelector('.goog-te-combo');
+            if (select) {
 
-                if (select) {
+                select.value = lang;
+                select.dispatchEvent(new Event('change'));
 
-                    select.value = lang;
-                    select.dispatchEvent(new Event('change'));
+                clearInterval(interval);
+            }
 
-                    clearInterval(interval);
-                }
+        }, 300);
+    }
 
-            }, 300);
+    /* Toggle Language Menu */
+
+    const langToggle = document.getElementById('langToggle');
+    const langMenu = document.getElementById('langMenu');
+
+    langToggle.addEventListener('click', () => {
+        langMenu.classList.toggle('show');
+    });
+
+    /* Scroll To Top */
+
+    const scrollBtn = document.getElementById('scrollTopBtn');
+
+    window.addEventListener('scroll', () => {
+
+        if (window.scrollY > 300) {
+            scrollBtn.style.display = 'block';
+        } else {
+            scrollBtn.style.display = 'none';
         }
+    });
+
+    scrollBtn.addEventListener('click', () => {
+
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     });
 </script>
 
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
